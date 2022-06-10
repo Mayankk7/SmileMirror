@@ -20,36 +20,65 @@ struct ContentView: View {
     }
 }
 
+
 struct AppHome : View{
     @Binding var GotoHome: Bool
     var body: some View {
-        VStack{
-            Text("Welcome to Smile Mirror ").padding().border(Color.white)
-            Button(action: {
-                GotoHome = true
-            }) {
-                Text("Start").padding()
-            }.frame(width: 300).background(Color.black).foregroundColor(.white).cornerRadius(10)
-        }.frame(width: .infinity, height: .infinity)
+        ZStack{
+            VStack{
+                Text("Welcome to Smile Mirror ").padding()
+                Button(action: {
+                    GotoHome = true
+                }) {
+                    Text("Start").padding()
+                }.frame(width: 300).background(Color.black).foregroundColor(.white).cornerRadius(10)
+            }
+        }
+
     }
 }
+
 
 struct MainApp : View{
     @State private var isShown : Bool = false
     @State private var image : Image = Image(systemName: "")
     @State private var  sourceType: UIImagePickerController.SourceType = .camera
-    
+
     var body : some View{
-        VStack{
-            Text("Smile is Magical !")
-            image.resizable().frame(width: 200, height: 200)
-            .border(Color.black)
-            Button(action: {
-                self.isShown.toggle()
-                self.sourceType = .camera
-            }) {
-                Text("Open Camera").padding()}.background(Color.black).cornerRadius(10).foregroundColor(.white)
-        }.sheet(isPresented : $isShown){
+        ZStack{
+            VStack{
+                VStack(spacing: 20){
+                HStack{
+                        Text("Happy")
+                    ProgressView("", value: 60, total: 100)
+                }.padding().foregroundColor(.green)
+                        .frame(width: 300)
+                    HStack{
+                        Text("Sad")
+                        ProgressView("", value: 20, total: 100)
+                    }.padding().foregroundColor(.yellow)
+                        .frame(width:300)
+                }.background(Color.white)
+                    .border(Color.teal)
+                    .cornerRadius(10)
+                    .offset(y:0)
+                    .frame(minWidth: 0, maxHeight: 400, alignment: .topLeading)
+                Text("Smile is Magical !").fontWeight(.light)
+                    .font(.title)
+                    .padding()
+                    
+                image.resizable().frame(width: 400, height: 200)
+                Button(action: {
+                    self.isShown.toggle()
+                    self.sourceType = .camera
+                }) {
+                    Text("Open Camera").padding()}.background(Color.black).cornerRadius(10).foregroundColor(.white)
+            }.frame(minWidth:0,maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .leading)
+                .offset(x:0, y:0)
+        }.background(Color.teal.opacity(0.2))
+            .frame(minWidth:0,maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .leading)
+            .edgesIgnoringSafeArea(.all)
+            .sheet(isPresented : $isShown){
             A(isShown : self.$isShown, myimage: self.$image, mysourceType: self.$sourceType)
         }
     }
